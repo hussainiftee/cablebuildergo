@@ -1,5 +1,6 @@
-aws_region = "eu-west-1"
-vpc_cidr   = "10.99.0.0/16"
+aws_region   = "eu-west-1"
+project_code = "CodeBuilderGo"
+vpc_cidr     = "10.99.0.0/16"
 dmz_public_cidrs = [
   "10.99.1.0/24",
   "10.99.2.0/24"
