@@ -13,3 +13,8 @@ db_private_cidrs = [
   "10.99.21.0/24",
   "10.99.22.0/24"
 ]
+
+db_avail_zone           = "eu-west-1a"
+rds_instance_identifier = "CableBuilderGo"
+database_name           = "cbg"
+database_user           = "cbgmaster"

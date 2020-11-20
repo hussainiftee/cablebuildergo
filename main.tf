@@ -20,5 +20,18 @@ module "security" {
   vpc_id              = module.networking.vpc_id
   dmz_subnet_id       = module.networking.public_subnets
   app_subnet_id       = module.networking.app_private_subnets
-  db_subnet_id       = module.networking.db_private_subnets
+  db_subnet_id        = module.networking.db_private_subnets
+}
+
+# Deploy tfstate Resource
+module "mysql-rds" {
+  source                  = "./mysql-rds"
+  rds_instance_identifier = var.rds_instance_identifier
+  database_name           = var.database_name
+  database_user           = var.database_user
+  database_password       = var.database_password
+  db_avail_zone           = var.db_avail_zone
+  vpc_id                  = module.networking.vpc_id
+  db_subnet_id            = module.networking.db_private_subnets
+  db_sg_id                = module.security.db_sg_id
 }

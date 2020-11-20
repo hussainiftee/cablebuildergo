@@ -35,3 +35,11 @@ variable "ALB_IngCIDRblock" {
   type        = "list"
   default     = ["0.0.0.0/0"]
 }
+
+#----database/variables.tf
+
+variable "rds_instance_identifier" {}
+variable "database_name" {}
+variable "database_user" {}
+variable "database_password" {}
+variable "db_avail_zone" {}
