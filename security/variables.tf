@@ -1,28 +1,17 @@
-variable "aws_region" {
-  description = "AWS region"
-}
+variable "vpc_id"{}
 
-#----networking/variables.tf
-
-variable "project_code" {
-  description = "Track the cost"
-}
-
-variable "vpc_cidr" {}
-
-variable "dmz_public_cidrs" {
+variable "dmz_subnet_id" {
   type = "list"
 }
 
-variable "app_private_cidrs" {
+variable "app_subnet_id" {
   type = "list"
 }
 
-variable "db_private_cidrs" {
+variable "db_subnet_id" {
   type = "list"
 }
 
-#----security/variables.tf
 
 variable "bastionIngCIDRblock" {
   description = "Mention the specific IP range"
