@@ -14,7 +14,16 @@ db_private_cidrs = [
   "10.99.22.0/24"
 ]
 
+# MySQL RDS Database Parameter
+engine                  = "mysql"
 db_avail_zone           = "eu-west-1a"
-rds_instance_identifier = "CableBuilderGo"
+rds_instance_identifier = "cablebuildergo"
 database_name           = "cbg"
 database_user           = "cbgmaster"
+engine_version          = "8.0.20"
+mysql_family            = "mysql8.0"
+db_instance_type        = "db.m5.large"
+allocated_storage       = "50"
+max_allocated_storage   = "100"
+storage_type            = "gp2"
+db_name_snapshot        = "cablebuildergo2"

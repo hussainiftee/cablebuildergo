@@ -11,3 +11,11 @@ variable "rds_instance_identifier" {}
 variable "database_name" {}
 variable "database_user" {}
 variable "database_password" {}
+variable "engine_version" {}
+variable "mysql_family" {}
+variable "db_instance_type" {}
+variable "allocated_storage" {}
+variable "max_allocated_storage" {}
+variable "storage_type" {}
+variable "engine" {}
+variable "db_name_snapshot" {}
