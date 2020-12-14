@@ -8,8 +8,8 @@ variable "db_sg_id"{}
 
 variable "db_avail_zone" {}
 variable "rds_instance_identifier" {}
-variable "database_name" {}
-variable "database_user" {}
+//variable "database_name" {}
+//variable "database_user" {}
 variable "database_password" {}
 variable "engine_version" {}
 variable "mysql_family" {}

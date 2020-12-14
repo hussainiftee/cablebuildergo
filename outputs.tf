@@ -27,3 +27,17 @@ output "DB-Private-Subnet-IPs" {
 }
 
 # -- Security/output ---
+
+# -- Database Output ---
+output "MySQL-RDS-Address" {
+  value = module.mysql-rds.rds-address
+}
+
+output "MySQL-RDS-EndPoint" {
+  value = module.mysql-rds.rds-endpoint
+}
+
+# -- IAM Output ---
+output "IAM-Instance-Profile" {
+  value = module.iam.instance_profile_name
+}

@@ -1,7 +1,15 @@
+# AWS Configuration 
 variable "aws_region" {
   description = "AWS region"
 }
 
+variable "aws_access_key" {
+  description = "AWS Access Key - needed for IAM"
+}
+
+variable "aws_secret_key" {
+  description = "AWS Secret Key- needed for IAM"
+}
 #----networking/variables.tf
 
 variable "project_code" {
@@ -24,12 +32,6 @@ variable "db_private_cidrs" {
 
 #----security/variables.tf
 
-variable "bastionIngCIDRblock" {
-  description = "Mention the specific IP range"
-  type        = "list"
-  default     = ["0.0.0.0/0"]
-}
-
 variable "ALB_IngCIDRblock" {
   description = "Mention the specific IP range"
   type        = "list"
@@ -39,8 +41,9 @@ variable "ALB_IngCIDRblock" {
 #----database/variables.tf
 
 variable "rds_instance_identifier" {}
-variable "database_name" {}
-variable "database_user" {}
+//variable "database_name" {}
+variable "db_name_snapshot" {}
+//variable "database_user" {}
 variable "database_password" {}
 variable "db_avail_zone" {}
 variable "engine_version" {}
@@ -50,4 +53,8 @@ variable "allocated_storage" {}
 variable "max_allocated_storage" {}
 variable "storage_type" {}
 variable "engine" {}
-variable "db_name_snapshot" {}
+
+
+#----compute/variables.tf
+variable "image_id" {}
+variable "asg_instance_type" {}

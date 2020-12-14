@@ -34,3 +34,4 @@ terraform.rc
 
 # Exclude secret file
 user.tfvars
+terraform.tfvars

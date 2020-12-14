@@ -1,3 +1,5 @@
+# RDS Module - MySQL
+
 resource "aws_db_subnet_group" "default" {
   name        = "${var.rds_instance_identifier}-subnet-group"
   description = "AWS RDS subnet group"
@@ -27,7 +29,7 @@ resource "aws_db_parameter_group" "param_group" {
 
 resource "aws_cloudwatch_log_group" "error" {
   name = "/aws/rds/instance/${aws_db_instance.default.identifier}/error"
-  retention_in_days = "5"
+  retention_in_days = "30"
 }
 
 data "aws_db_snapshot" "latest_cbg_snapshot" {
@@ -35,6 +37,7 @@ data "aws_db_snapshot" "latest_cbg_snapshot" {
   most_recent            = true
 }
 
+# Creating the database from Snapshot, hence few parameter commented.
 resource "aws_db_instance" "default" {
   identifier                = var.rds_instance_identifier
   snapshot_identifier       = data.aws_db_snapshot.latest_cbg_snapshot.id
@@ -45,8 +48,8 @@ resource "aws_db_instance" "default" {
   engine                    = var.engine
   engine_version            = var.engine_version
   instance_class            = var.db_instance_type
-  name                      = var.database_name
-  username                  = var.database_user
+  //name                      = var.database_name
+  //username                  = var.database_user
   password                  = var.database_password
   db_subnet_group_name      = aws_db_subnet_group.default.id
   vpc_security_group_ids    = [var.db_sg_id]
@@ -54,10 +57,13 @@ resource "aws_db_instance" "default" {
   final_snapshot_identifier = "CodeBuilderGo-v1"
   deletion_protection = false
   publicly_accessible = false
+  storage_encrypted = true
   enabled_cloudwatch_logs_exports = ["error", "general", "slowquery"]
   parameter_group_name = aws_db_parameter_group.param_group.name
   
+  depends_on = ["aws_db_parameter_group.param_group"]
+
   lifecycle {
-    ignore_changes = [snapshot_identifier]
+    ignore_changes = ["snapshot_identifier"]
   }
 }
