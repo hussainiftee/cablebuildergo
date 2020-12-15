@@ -2,6 +2,7 @@ provider "aws" {
   region     = var.aws_region
   access_key = var.aws_access_key
   secret_key = var.aws_secret_key
+  version = "3.16.0"
 }
 
 # Deploy Networking Resource
@@ -69,5 +70,8 @@ module "compute" {
   iam_instance_profile = module.iam.instance_profile_name
   image_id             = var.image_id
   asg_instance_type    = var.asg_instance_type
+  asg_vol_size    = var.asg_vol_size
+  asg_vol_type    = var.asg_vol_type
   rds_address          = module.mysql-rds.rds-address
+  rds_password         = module.mysql-rds.rds-password
 } 

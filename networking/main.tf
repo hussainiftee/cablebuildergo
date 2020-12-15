@@ -46,7 +46,7 @@ resource "aws_subnet" "tf_public_subnet" {
   availability_zone       = data.aws_availability_zones.availaible.names[count.index]
 
   tags = {
-    Name    = "DMZ_PUBLIC_${count.index + 1}"
+    Name    = "CBG_PUBLIC_${count.index + 1}"
     Project = "var.project_code"
   }
 }

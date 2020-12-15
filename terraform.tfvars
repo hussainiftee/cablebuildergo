@@ -33,3 +33,5 @@ db_name_snapshot      = "cablebuildergo2"
 # Compute Parameter
 image_id          = "ami-0ce1e3f77cd41957e"
 asg_instance_type = "t2.medium"
+asg_vol_size = "15"
+asg_vol_type = "gp2"

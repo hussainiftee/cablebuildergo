@@ -58,3 +58,5 @@ variable "engine" {}
 #----compute/variables.tf
 variable "image_id" {}
 variable "asg_instance_type" {}
+variable "asg_vol_size" {}
+variable "asg_vol_type" {}

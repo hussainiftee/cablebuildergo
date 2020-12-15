@@ -17,6 +17,7 @@ tar -C /opt/CableBuilderGo/ -xvzf /opt/CableBuilderGo/cbgo_Trunk_27022.tar.gz
 /bin/cp -rf /opt/CableBuilderGo/loopback-context.xml /opt/tomcat/webapps/manager/META-INF/context.xml
 /bin/cp -rf /opt/CableBuilderGo/server.xml /opt/tomcat/conf/server.xml
 /usr/bin/sed -i 's/cablebuildergodb/'"${rds_address}"'/g' /opt/tomcat/conf/Catalina/localhost/context.xml
+/usr/bin/sed -i 's/DbPassword/'"${rds_password}"'/g' /opt/tomcat/conf/Catalina/localhost/context.xml
 /usr/local/bin/tomcat-stop
 /usr/local/bin/tomcat-start
 #end.

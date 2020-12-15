@@ -24,7 +24,7 @@ resource "aws_default_security_group" "default" {
 # Create Bastion Security Group
 resource "aws_security_group" "bastion_sg" {
   vpc_id      = var.vpc_id
-  name        = "CBG-BastionSG"
+  name        = "CBG-PublicSG"
   description = "Allow SSH from listed cidr blocks"
 
   # allow ingress of port 22
@@ -270,7 +270,7 @@ resource "aws_network_acl" "dmz_public_acl" {
   }
   
   tags = {
-    Name = "CBG_DMZ_Public_NACL"
+    Name = "CBG_Public_NACL"
   }
 }
 
@@ -280,11 +280,21 @@ resource "aws_network_acl" "dmz_public_acl" {
 resource "aws_network_acl" "app_priv_acl" {
   vpc_id      = var.vpc_id
   subnet_ids = var.app_subnet_id[*]
+
+# allow ingress port SSH
+  ingress {
+    protocol   = "tcp"
+    rule_no    = 100
+    action     = "allow"
+    cidr_block = var.vpc_cidr
+    from_port  = 22
+    to_port    = 22
+  }
   
  # allow ingress port MySQL RDS
   ingress {
     protocol   = "tcp"
-    rule_no    = 100
+    rule_no    = 200
     action     = "allow"
     cidr_block = var.vpc_cidr
     from_port  = 3306
@@ -294,7 +304,7 @@ resource "aws_network_acl" "app_priv_acl" {
   # allow ingress port HTTP
   ingress {
     protocol   = "tcp"
-    rule_no    = 200
+    rule_no    = 300
     action     = "allow"
     cidr_block = var.vpc_cidr
     from_port  = 80
@@ -304,7 +314,7 @@ resource "aws_network_acl" "app_priv_acl" {
    # allow ingress port HTTPS
   ingress {
     protocol   = "tcp"
-    rule_no    = 300
+    rule_no    = 400
     action     = "allow"
     cidr_block = var.vpc_cidr
     from_port  = 443
@@ -314,7 +324,7 @@ resource "aws_network_acl" "app_priv_acl" {
    # allow ingress port Tomcat
   ingress {
     protocol   = "tcp"
-    rule_no    = 400
+    rule_no    = 500
     action     = "allow"
     cidr_block = var.vpc_cidr
     from_port  = 8080
@@ -324,9 +334,9 @@ resource "aws_network_acl" "app_priv_acl" {
   # allow ingress ephemeral ports 
   ingress {
     protocol   = "tcp"
-    rule_no    = 500
+    rule_no    = 600
     action     = "allow"
-    cidr_block = var.vpc_cidr
+    cidr_block = "0.0.0.0/0"
     from_port  = 1024
     to_port    = 65535
   }
