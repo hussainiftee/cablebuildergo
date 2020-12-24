@@ -19,3 +19,7 @@ variable "max_allocated_storage" {}
 variable "storage_type" {}
 variable "engine" {}
 variable "db_name_snapshot" {}
+
+variable "enabled_cloudwatch_logs_exports" {
+    type = "list"
+}

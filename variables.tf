@@ -10,6 +10,7 @@ variable "aws_access_key" {
 variable "aws_secret_key" {
   description = "AWS Secret Key- needed for IAM"
 }
+
 #----networking/variables.tf
 
 variable "project_code" {
@@ -53,10 +54,20 @@ variable "allocated_storage" {}
 variable "max_allocated_storage" {}
 variable "storage_type" {}
 variable "engine" {}
-
+variable "enabled_cloudwatch_logs_exports" {
+  type = "list"
+}
 
 #----compute/variables.tf
 variable "image_id" {}
 variable "asg_instance_type" {}
 variable "asg_vol_size" {}
 variable "asg_vol_type" {}
+variable "asg_min_size" {}
+variable "asg_max_size" {}
+
+# Deploy VPC Flow log
+
+
+# Deploy CloudTrail
+variable "s3_bucket_name" {}

@@ -1,6 +1,9 @@
 # AWS Settings
 aws_region = "eu-west-1"
 
+# Tagging or the Resource Cost
+
+
 project_code = "CodeBuilderGo"
 vpc_cidr     = "10.99.0.0/16"
 dmz_public_cidrs = [
@@ -29,9 +32,24 @@ allocated_storage     = "50"
 max_allocated_storage = "100"
 storage_type          = "gp2"
 db_name_snapshot      = "cablebuildergo2"
+enabled_cloudwatch_logs_exports = [
+  "error",
+  "general",
+  "slowquery"
+]
 
 # Compute Parameter
 image_id          = "ami-0ce1e3f77cd41957e"
 asg_instance_type = "t2.medium"
-asg_vol_size = "15"
-asg_vol_type = "gp2"
+asg_vol_size      = "15"
+asg_vol_type      = "gp2"
+
+// AutoScaling Instance Size
+asg_min_size = "1"
+asg_max_size = "2"
+
+
+# Deploy VPC Flow log
+
+# Deploy Cloudtrail
+s3_bucket_name = "cablebuildergo-trail"

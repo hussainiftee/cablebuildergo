@@ -2,11 +2,11 @@
 
 # -- Networking/output ---
 
-output "DMZ-Public-Subnets" {
+output "CBG-Public-Subnets" {
   value = join(", ", module.networking.public_subnets)
 }
 
-output "DMZ-Public-Subnet-IPs" {
+output "CBG-Public-Subnet-IPs" {
   value = join(", ", module.networking.public_subnet_ips)
 }
 
@@ -30,11 +30,11 @@ output "DB-Private-Subnet-IPs" {
 
 # -- Database Output ---
 output "MySQL-RDS-Address" {
-  value = module.mysql-rds.rds-address
+  value = module.mysqlrds.rds-address
 }
 
 output "MySQL-RDS-EndPoint" {
-  value = module.mysql-rds.rds-endpoint
+  value = module.mysqlrds.rds-endpoint
 }
 
 # -- IAM Output ---

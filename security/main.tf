@@ -24,7 +24,7 @@ resource "aws_default_security_group" "default" {
 # Create Bastion Security Group
 resource "aws_security_group" "bastion_sg" {
   vpc_id      = var.vpc_id
-  name        = "CBG-PublicSG"
+  name        = "CBG-BastionSG"
   description = "Allow SSH from listed cidr blocks"
 
   # allow ingress of port 22
@@ -203,16 +203,17 @@ resource "aws_network_acl" "dmz_public_acl" {
     to_port    = 65535
   }
   
-  # allow egress port SSH 
+   # allow egress port SSH
   egress {
     protocol   = "tcp"
     rule_no    = 100
     action     = "allow"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 22 
-    to_port    = 22
+    cidr_block = var.vpc_cidr
+    from_port  = 22  
+    to_port    = 22 
   }
-  # allow egress port HTTP 
+ 
+   # allow egress port HTTP
   egress {
     protocol   = "tcp"
     rule_no    = 200
@@ -221,6 +222,7 @@ resource "aws_network_acl" "dmz_public_acl" {
     from_port  = 80  
     to_port    = 80 
   }
+ 
    # allow egress port HTTPS
   egress {
     protocol   = "tcp"
@@ -230,43 +232,15 @@ resource "aws_network_acl" "dmz_public_acl" {
     from_port  = 443  
     to_port    = 443 
   }
-    # allow egress port Tomcat
+ 
+  # allow egress ephemeral ports
   egress {
     protocol   = "tcp"
     rule_no    = 400
     action     = "allow"
     cidr_block = "0.0.0.0/0"
-    from_port  = 8080  
-    to_port    = 8080
-  }
-  # allow egress ephemeral ports
-  egress {
-    protocol   = "tcp"
-    rule_no    = 500
-    action     = "allow"
-    cidr_block = "0.0.0.0/0"
     from_port  = 1024
     to_port    = 65535
-  }
-  
-  # TEMP ALLOW ALL for migration 
-  ingress {
-    protocol   = -1
-    rule_no    = 600
-    action     = "allow"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 0
-    to_port    = 0
-  }
-  
-  # TEMP ALLOW ALL for migration 
-  egress {
-    protocol   = -1
-    rule_no    = 600
-    action     = "allow"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 0 
-    to_port    = 0
   }
   
   tags = {
@@ -291,20 +265,10 @@ resource "aws_network_acl" "app_priv_acl" {
     to_port    = 22
   }
   
- # allow ingress port MySQL RDS
-  ingress {
-    protocol   = "tcp"
-    rule_no    = 200
-    action     = "allow"
-    cidr_block = var.vpc_cidr
-    from_port  = 3306
-    to_port    = 3306
-  }
-  
   # allow ingress port HTTP
   ingress {
     protocol   = "tcp"
-    rule_no    = 300
+    rule_no    = 200
     action     = "allow"
     cidr_block = var.vpc_cidr
     from_port  = 80
@@ -314,7 +278,7 @@ resource "aws_network_acl" "app_priv_acl" {
    # allow ingress port HTTPS
   ingress {
     protocol   = "tcp"
-    rule_no    = 400
+    rule_no    = 300
     action     = "allow"
     cidr_block = var.vpc_cidr
     from_port  = 443
@@ -324,7 +288,7 @@ resource "aws_network_acl" "app_priv_acl" {
    # allow ingress port Tomcat
   ingress {
     protocol   = "tcp"
-    rule_no    = 500
+    rule_no    = 400
     action     = "allow"
     cidr_block = var.vpc_cidr
     from_port  = 8080
@@ -334,57 +298,37 @@ resource "aws_network_acl" "app_priv_acl" {
   # allow ingress ephemeral ports 
   ingress {
     protocol   = "tcp"
-    rule_no    = 600
+    rule_no    = 500
     action     = "allow"
     cidr_block = "0.0.0.0/0"
     from_port  = 1024
     to_port    = 65535
   }
   
-  # allow egress port MySQL RDS 
+   # allow egress port HTTP (Need for Session Manager)
   egress {
     protocol   = "tcp"
     rule_no    = 100
     action     = "allow"
     cidr_block = "0.0.0.0/0"
-    from_port  = 3306 
-    to_port    = 3306
+    from_port  = 80  
+    to_port    = 80 
   }
-  
-  # allow egress port HTTP 
+ 
+   # allow egress port HTTPS (Need for Session Manager)
   egress {
     protocol   = "tcp"
     rule_no    = 200
     action     = "allow"
     cidr_block = "0.0.0.0/0"
-    from_port  = 80  
-    to_port    = 80 
-  }
-  
-   # allow egress port HTTPS
-  egress {
-    protocol   = "tcp"
-    rule_no    = 300
-    action     = "allow"
-    cidr_block = "0.0.0.0/0"
     from_port  = 443  
     to_port    = 443 
   }
   
-   # allow egress port Tomcat
-  egress {
-    protocol   = "tcp"
-    rule_no    = 400
-    action     = "allow"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 443  
-    to_port    = 443 
-  }
- 
   # allow egress ephemeral ports
   egress {
     protocol   = "tcp"
-    rule_no    = 500
+    rule_no    = 300
     action     = "allow"
     cidr_block = "0.0.0.0/0"
     from_port  = 1024
@@ -411,33 +355,13 @@ resource "aws_network_acl" "db_priv_acl" {
     from_port  = 3306
     to_port    = 3306
   }
-  
-  # allow ingress ephemeral ports 
-  ingress {
-    protocol   = "tcp"
-    rule_no    = 200
-    action     = "allow"
-    cidr_block = var.vpc_cidr
-    from_port  = 1024
-    to_port    = 65535
-  }
-  
-  # allow egress port MySQL RDS 
-  egress {
-    protocol   = "tcp"
-    rule_no    = 100
-    action     = "allow"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 3306 
-    to_port    = 3306
-  }
  
   # allow egress ephemeral ports
   egress {
     protocol   = "tcp"
-    rule_no    = 200
+    rule_no    = 100
     action     = "allow"
-    cidr_block = "0.0.0.0/0"
+    cidr_block = var.vpc_cidr
     from_port  = 1024
     to_port    = 65535
   }

@@ -33,7 +33,7 @@ resource "aws_route_table" "tf_public_rt" {
   }
 
   tags = {
-    Name = "PublicRT"
+    Name = "CBG_PublicRT"
   }
 }
 
@@ -62,7 +62,7 @@ resource "aws_route_table" "tf_private_rt" {
   vpc_id = aws_vpc.cbg_vpc.id
 
   tags = {
-    Name = "PrivateRT"
+    Name = "CBG_PrivateRT"
   }
 }
 

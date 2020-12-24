@@ -8,6 +8,9 @@ variable "iam_instance_profile" {}
 variable "rds_address" {}
 variable "rds_password" {}
 
+variable "asg_min_size" {}
+variable "asg_max_size" {}
+
 variable "app_subnet_id" {
   type = "list"
 }

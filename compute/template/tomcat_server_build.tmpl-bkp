@@ -11,14 +11,18 @@ ln -s /opt/tomcat/bin/startup.sh /usr/local/bin/tomcat-start
 ln -s /opt/tomcat/bin/shutdown.sh /usr/local/bin/tomcat-stop
 ln -s /opt/tomcat/bin/version.sh /usr/local/bin/tomcat-version
 /usr/local/bin/tomcat-start
-/usr/bin/sleep 20
-/usr/bin/unzip /opt/CableBuilderGo/cbgo_Trunk.zip -d /opt/CableBuilderGo/ 
+#tar -C /opt/CableBuilderGo/ -xvzf /opt/CableBuilderGo/cbgo_Trunk_27022.tar.gz
+/usr/bin/unzip /opt/CableBuilderGo/cbgo_Trunk_27913.zip -d /opt/CableBuilderGo/ 
 /bin/cp -rf /opt/CableBuilderGo/context.xml /opt/tomcat/conf/Catalina/localhost/context.xml
 /bin/cp -rf /opt/CableBuilderGo/loopback-context.xml /opt/tomcat/webapps/host-manager/META-INF/context.xml
 /bin/cp -rf /opt/CableBuilderGo/loopback-context.xml /opt/tomcat/webapps/manager/META-INF/context.xml
 /bin/cp -rf /opt/CableBuilderGo/server.xml /opt/tomcat/conf/server.xml
 /usr/bin/sed -i 's/cablebuildergodb/'"${rds_address}"'/g' /opt/tomcat/conf/Catalina/localhost/context.xml
 /usr/bin/sed -i 's/DbPassword/'"${rds_password}"'/g' /opt/tomcat/conf/Catalina/localhost/context.xml
+mkdir /opt/CableBuilderGo/cbgo_Trunk_27022/license
+/bin/cp -rf  /opt/CableBuilderGo/CBGO/*.enc /opt/CableBuilderGo/cbgo_Trunk_27022/license/
+MAC_ADD="`wget -q -O - http://instance-data/latest/meta-data/mac`" 
+echo "$MAC_ADD"
 /usr/local/bin/tomcat-stop
 /usr/local/bin/tomcat-start
 #end.
