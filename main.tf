@@ -28,6 +28,8 @@ module "flowlog" {
 module "cloudtrail" {
   source         = "./cloudtrail"
   s3_bucket_name = var.s3_bucket_name
+  aws_region     = var.aws_region
+  account_id     = var.account_id
 }
 
 # Deploy Securtity (SG & NACL) Resource

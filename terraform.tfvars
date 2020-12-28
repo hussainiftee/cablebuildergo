@@ -1,5 +1,7 @@
-# AWS Settings
-aws_region = "eu-west-1"
+# AWS Regions
+aws_region = "eu-west-2"     // Launching All the resources
+db_avail_zone           = "eu-west-2a"   // Launching the RDS instance
+account_id = "102342825506"
 
 # Tagging or the Resource Cost
 
@@ -21,7 +23,6 @@ db_private_cidrs = [
 
 # MySQL RDS Database Parameter
 engine                  = "mysql"
-db_avail_zone           = "eu-west-1a"
 rds_instance_identifier = "cablebuildergo"
 //database_name           = "cbg"
 //database_user           = "admin"
@@ -39,7 +40,8 @@ enabled_cloudwatch_logs_exports = [
 ]
 
 # Compute Parameter
-image_id          = "ami-0ce1e3f77cd41957e"
+//image_id          = "ami-0ce1e3f77cd41957e" //eu-west-1
+image_id          = "ami-0e80a462ede03e653" //eu-west-2
 asg_instance_type = "t2.medium"
 asg_vol_size      = "15"
 asg_vol_type      = "gp2"

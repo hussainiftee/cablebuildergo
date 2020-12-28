@@ -11,6 +11,10 @@ variable "aws_secret_key" {
   description = "AWS Secret Key- needed for IAM"
 }
 
+variable "account_id" {
+  description = "AWS account_id needed for Key Policy"
+}
+
 #----networking/variables.tf
 
 variable "project_code" {
