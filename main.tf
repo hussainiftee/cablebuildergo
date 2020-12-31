@@ -1,31 +1,40 @@
 # Master Module to build 3 Tier Application with High Availaibility 
 # Terraform and Provider Version mentioned in version.tf file
+# Config and state information are mentioned in config.tf file
 
-# Deploy Networking Resource (VPC & Components)
+# Deploy Networking Resource (VPC & network Components)
 module "networking" {
   source            = "./networking"
   vpc_cidr          = var.vpc_cidr
   dmz_public_cidrs  = var.dmz_public_cidrs
   app_private_cidrs = var.app_private_cidrs
   db_private_cidrs  = var.db_private_cidrs
-  project_code      = var.project_code
+  tag_proj_name     = var.tag_proj_name
+  tag_env           = var.tag_env
 }
 
-# Deploy VPC Flow log
+# Enabling VPC Flow log
 module "flowlog" {
-  source = "./flowlog"
-  vpc_id = module.networking.vpc_id
+  source        = "./flowlog"
+  vpc_id        = module.networking.vpc_id
+  tag_proj_name = var.tag_proj_name
+  tag_env       = var.tag_env
 }
 
-# Deploy CloudTrail
+# Enabling CloudTrail
 module "cloudtrail" {
-  source         = "./cloudtrail"
-  s3_bucket_name = var.s3_bucket_name
-  aws_region     = var.aws_region
-  account_id     = var.account_id
+  source                       = "./cloudtrail"
+  s3_bucket_name               = var.s3_bucket_name
+  aws_region                   = var.aws_region
+  account_id                   = var.account_id
+  s3_bucket_days_to_expiration = var.s3_bucket_days_to_expiration
+  s3_bucket_days_to_transition = var.s3_bucket_days_to_transition
+  multi_region_trail           = var.multi_region_trail
+  tag_proj_name                = var.tag_proj_name
+  tag_env                      = var.tag_env
 }
 
-# Deploy Securtity (SG & NACL) Resource
+# Deploy Securiy (SG & NACL) Resources
 module "security" {
   source           = "./security"
   vpc_cidr         = var.vpc_cidr
@@ -36,18 +45,16 @@ module "security" {
   db_subnet_id     = module.networking.db_private_subnets
 }
 
-# Deploy MySQL RDS Resource using RDS Snapshot
+# Deploy MySQL RDS Resource using RDS Snapshot. Create another similar module for a different RDS 
 module "mysqlrds" {
   source = "./mysqlrds"
   //database_name    = var.database_name  (Not Required as using Snapshot)
   //database_user           = var.database_user (Not Required as using Snapshot)
-  db_name_snapshot = var.db_name_snapshot
-  //database_password               = var.database_password
-  engine         = var.engine
-  engine_version = var.engine_version
-  mysql_family   = var.mysql_family
-  storage_type   = var.storage_type
-  //db_avail_zone                   = var.db_avail_zone
+  db_name_snapshot                = var.db_name_snapshot
+  engine                          = var.engine
+  engine_version                  = var.engine_version
+  mysql_family                    = var.mysql_family
+  storage_type                    = var.storage_type
   rds_instance_identifier         = var.rds_instance_identifier
   db_instance_type                = var.db_instance_type
   allocated_storage               = var.allocated_storage
@@ -61,12 +68,10 @@ module "mysqlrds" {
 }
 
 
-# Deploy IAM role and profile
+# Deploy IAM role and profile for application ec2 instance
 module "iam" {
   source     = "./iam"
   aws_region = var.aws_region
-  // aws_access_key = var.aws_access_key
-  //aws_secret_key = var.aws_secret_key
 }
 
 
@@ -87,7 +92,6 @@ module "compute" {
   elb_subnet_id        = module.networking.public_subnets
   iam_instance_profile = module.iam.instance_profile_name
   rds_address          = module.mysqlrds.rds-address
-  //rds_password         = module.mysqlrds.rds-password
 }
 
 

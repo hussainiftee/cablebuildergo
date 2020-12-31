@@ -7,8 +7,8 @@ tag_proj_name = "CableBuilderGo"
 tag_env       = "Production"
 
 # Networking 
-project_code = "CodeBuilderGo"
-vpc_cidr     = "10.99.0.0/16"
+//project_code = "CodeBuilderGo"
+vpc_cidr = "10.99.0.0/16"
 dmz_public_cidrs = [
   "10.99.1.0/24",
   "10.99.2.0/24"
@@ -52,7 +52,8 @@ asg_min_size = "1"
 asg_max_size = "1"
 
 
-# Deploy VPC Flow log
-
-# Deploy Cloudtrail
-s3_bucket_name = "cablebuildergo-trail"
+# Cloudtrail config variables
+s3_bucket_name               = "cablebuildergo-trail"
+s3_bucket_days_to_expiration = "60"
+s3_bucket_days_to_transition = "30"
+multi_region_trail           = "false"

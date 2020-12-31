@@ -1,7 +1,11 @@
 #----networking/variables.tf
 
-variable "project_code" {
-  description = "Track the cost"
+variable "tag_proj_name" {
+  default     = "cimteq"
+}
+
+variable "tag_env" {
+  default     = "Test"
 }
 
 variable "vpc_cidr" {}

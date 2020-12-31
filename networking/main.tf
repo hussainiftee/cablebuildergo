@@ -1,3 +1,5 @@
+# Network main module start
+
 # declare a VPC
 data "aws_availability_zones" "availaible" {}
 
@@ -7,8 +9,9 @@ resource "aws_vpc" "cbg_vpc" {
   enable_dns_support   = true
 
   tags = {
-    Name    = "CableBuilderGoVPC"
-    Project = "var.project_code"
+    Name    = "${var.tag_proj_name}-VPC"
+    Project        = "var.tag_proj_name"
+    Environment = "var.tag_env"
   }
 }
 
@@ -17,8 +20,9 @@ resource "aws_internet_gateway" "cbg_vpc_igw" {
   vpc_id = aws_vpc.cbg_vpc.id
 
   tags = {
-    Name    = "CableBuilderGoIGW"
-    Project = "var.project_code"
+    Name   = "${var.tag_proj_name}-IGW"
+    Project        = "var.tag_proj_name"
+    Environment = "var.tag_env"
   }
 }
 
@@ -33,7 +37,7 @@ resource "aws_route_table" "tf_public_rt" {
   }
 
   tags = {
-    Name = "CBG_PublicRT"
+    Name = "${var.tag_proj_name}-PublicRT"
   }
 }
 
@@ -46,8 +50,7 @@ resource "aws_subnet" "tf_public_subnet" {
   availability_zone       = data.aws_availability_zones.availaible.names[count.index]
 
   tags = {
-    Name    = "CBG_PUBLIC_${count.index + 1}"
-    Project = "var.project_code"
+    Name    = "${var.tag_proj_name}_PUBLIC_${count.index + 1}"
   }
 }
 
@@ -62,7 +65,7 @@ resource "aws_route_table" "tf_private_rt" {
   vpc_id = aws_vpc.cbg_vpc.id
 
   tags = {
-    Name = "CBG_PrivateRT"
+    Name = "${var.tag_proj_name}-PrivateRT"
   }
 }
 
@@ -74,8 +77,9 @@ resource "aws_subnet" "tf_app_private_subnet" {
   availability_zone = data.aws_availability_zones.availaible.names[count.index]
 
   tags = {
-    Name    = "APP_PRIVATE_${count.index + 1}"
-    Project = "var.project_code"
+    Name    = "${var.tag_proj_name}_APP_PRIVATE_${count.index + 1}"
+    Project        = "var.tag_proj_name"
+    Environment = "var.tag_env"
   }
 }
 
@@ -93,8 +97,9 @@ resource "aws_subnet" "tf_db_private_subnet" {
   availability_zone = data.aws_availability_zones.availaible.names[count.index]
 
   tags = {
-    Name    = "DB_PRIVATE_${count.index + 1}"
-    Project = "var.project_code"
+    Name    = "${var.tag_proj_name}_DB_PRIVATE_${count.index + 1}"
+    Project        = "var.tag_proj_name"
+    Environment = "var.tag_env"
   }
 }
 
@@ -109,8 +114,9 @@ resource "aws_eip" "nat_gw_eip" {
   vpc = true
 
   tags = {
-    Name    = "CableBuilder-NGW-EIP"
-    Project = "var.project_code"
+    Name    = "${var.tag_proj_name}-NGW-EIP"
+    Project        = "var.tag_proj_name"
+    Environment = "var.tag_env"
   }
 }
 
@@ -121,8 +127,9 @@ resource "aws_nat_gateway" "ngw" {
   depends_on    = [aws_subnet.tf_public_subnet, aws_eip.nat_gw_eip]
 
   tags = {
-    Name    = "CableBuilder-NGW"
-    Project = "var.project_code"
+    Name    = "${var.tag_proj_name}-NGW"
+    Project        = "var.tag_proj_name"
+    Environment = "var.tag_env"
   }
 }
 

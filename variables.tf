@@ -1,15 +1,9 @@
-# AWS Configuration 
+# Main module Varriable information
+
+#---- AWS Configuration 
 variable "aws_region" {
   description = "AWS region"
 }
-
-/*variable "aws_access_key" {
-  description = "AWS Access Key - needed for IAM"
-}
-
-variable "aws_secret_key" {
-  description = "AWS Secret Key- needed for IAM"
-} */
 
 variable "account_id" {
   description = "AWS account_id needed for Key Policy"
@@ -27,9 +21,9 @@ variable "tag_env" {
 
 #----networking/variables.tf
 
-variable "project_code" {
+/*variable "project_code" {
   description = "Track the cost"
-}
+}*/
 
 variable "vpc_cidr" {}
 
@@ -80,8 +74,9 @@ variable "asg_vol_type" {}
 variable "asg_min_size" {}
 variable "asg_max_size" {}
 
-# Deploy VPC Flow log
 
-
-# Deploy CloudTrail
+#---- Deploy CloudTrail
 variable "s3_bucket_name" {}
+variable "s3_bucket_days_to_expiration" {}
+variable "s3_bucket_days_to_transition" {}
+variable "multi_region_trail" {}

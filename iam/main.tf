@@ -1,8 +1,4 @@
-/*provider "aws" {
-  region = var.aws_region
-  access_key = var.aws_access_key
-  secret_key = var.aws_secret_key
-}*/
+# IAM main module: Create Profile/Role/Policy for application ec2 instance.
 
 data "aws_iam_policy" "AmazonEC2RoleforSSM" {
   arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM"

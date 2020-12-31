@@ -1,8 +1,9 @@
 #
-# Enable Cloud Trail 
+# CloudTrail Main module: Enable Cloud Trail and securing with KMS
 #
-
-/*resource "aws_kms_key" "logs" {
+/*
+# Creating KMS key to secure the cloudtrail for security
+resource "aws_kms_key" "logs" {
   description = "KMS Key used for log encryption"
   enable_key_rotation = true
    policy = <<POLICY
@@ -103,38 +104,45 @@
     ]
 }
 POLICY
+tags = {
+    Project        = "var.tag_proj_name"
+    Environment = "var.tag_env"
+  } 
 }
 
 resource "aws_kms_alias" "auditlog" {
     name = "alias/auditlog"
     target_key_id = aws_kms_key.logs.key_id
-} */
+} 
+*/
 
+# Creating and Configuring CloudTrail
 resource "aws_cloudtrail" "trail" {
-  name           = "trail${replace(title(var.project), " ", "")}${title(var.environment)}"
+  //name           = "trail${replace(title(var.tag_proj_name), " ", "")}${title(var.tag_env)}"
+  name  = "trail${var.tag_proj_name}"
   s3_bucket_name = "${var.s3_bucket_name}"
   s3_key_prefix  = "${var.s3_key_prefix}"
   enable_logging                = true
   include_global_service_events = true
-  is_multi_region_trail         = "${var.is_multi_region_trail}"
+  is_multi_region_trail         = "${var.multi_region_trail}"
   enable_log_file_validation    = true
-  is_organization_trail         = "${var.is_organization_trail}"
+  is_organization_trail         = "${var.organization_trail}"
   //kms_key_id                    = aws_kms_alias.auditlog.arn
 
   event_selector {
     read_write_type           = "All"
     include_management_events = true
 
-    data_resource {
+  data_resource {
       type   = "AWS::S3::Object"
       values = ["arn:aws:s3:::"]
     }
   }
   
-  /*tags {
-    Name        = "${var.project}"
-    Environment = "${var.environment}"
-  } */
+  tags = {
+    Project        = "var.tag_proj_name"
+    Environment = "var.tag_env"
+  } 
 
   depends_on = ["aws_s3_bucket.trail"]
   
@@ -144,6 +152,7 @@ resource "aws_cloudtrail" "trail" {
   
 }
 
+#Creating S3 bucket for Cloudtrail
 resource "aws_s3_bucket" "trail" {
 
   bucket = var.s3_bucket_name
@@ -192,4 +201,9 @@ resource "aws_s3_bucket" "trail" {
     ]
 }
 POLICY
+
+tags = {
+    Project        = "var.tag_proj_name"
+    Environment = "var.tag_env"
+  } 
 }

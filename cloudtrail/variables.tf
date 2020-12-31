@@ -1,17 +1,16 @@
-variable "project" {
+#
+# CloudTrail variable module: 
+#
+
+variable "tag_proj_name" {
   default     = "cimteq"
-  description = "Project name, used for tagging and naming the Trail."
 }
 
-variable "environment" {
+variable "tag_env" {
   default     = "Test"
-  description = "Name of the environment this Trail is targeting."
 }
 
-variable "aws_region" {
-  default     = "eu-west-1"
-  description = "Name of the region where the Trail should be created."
-}
+variable "aws_region" {}
 
 variable "account_id" {
   description = "Account Id"
@@ -31,12 +30,12 @@ variable "s3_bucket_days_to_transition" {
   description = "How many days to store logs before they will be transitioned to a new storage class. Only applies if `enable_s3_bucket_transition` is true."
 }
 
-variable "is_multi_region_trail" {
+variable "multi_region_trail" {
   default     = "false"
   description = "Specifies whether the trail is created in the current region or in all regions."
 }
 
-variable "is_organization_trail" {
+variable "organization_trail" {
   default     = "false"
   description = "Specifies whether the trail is an AWS Organizations trail, which must be created in the organization master account."
 }
