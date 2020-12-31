@@ -20,8 +20,6 @@ ln -s /opt/tomcat/bin/version.sh /usr/local/bin/tomcat-version
 export rds_password=`aws --region=${aws_region} ssm get-parameter --name "/production/cablebuildergo/password/admin" --with-decryption --output text --query Parameter.Value`
 /usr/bin/sed -i 's/cablebuildergodb/'"${rds_address}"'/g' /opt/tomcat/conf/Catalina/localhost/context.xml
 /bin/cp -rf /opt/tomcat/conf/Catalina/localhost/context.xml /opt/tomcat/conf/Catalina/localhost/context.xml-reuse
-/usr/bin/sed -i 's/my_region/'"${aws_region}"'/g' /opt/CableBuilderGo/password_update.sh
-chmod 755 /opt/CableBuilderGo/password_update.sh
 /usr/bin/sed -i 's/DbPassword/'"$rds_password"'/g' /opt/tomcat/conf/Catalina/localhost/context.xml
 /usr/local/bin/tomcat-stop
 /usr/local/bin/tomcat-start

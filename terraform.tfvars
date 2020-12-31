@@ -1,11 +1,12 @@
 # AWS Regions
-aws_region = "eu-west-2"     // Launching All the resources
-db_avail_zone           = "eu-west-2a"   // Launching the RDS instance
-account_id = "102342825506"
+aws_region = "eu-west-2"    // Launching All the resources in this ZONE
+account_id = "102342825506" // Required for the IAM Policy to grant this account id
 
-# Tagging or the Resource Cost
+# Tagging 
+tag_proj_name = "CableBuilderGo"
+tag_env       = "Production"
 
-
+# Networking 
 project_code = "CodeBuilderGo"
 vpc_cidr     = "10.99.0.0/16"
 dmz_public_cidrs = [
@@ -32,7 +33,7 @@ db_instance_type      = "db.m5.large"
 allocated_storage     = "50"
 max_allocated_storage = "100"
 storage_type          = "gp2"
-db_name_snapshot      = "cablebuildergo2"
+db_name_snapshot      = "cablebuildergo"
 enabled_cloudwatch_logs_exports = [
   "error",
   "general",
@@ -48,7 +49,7 @@ asg_vol_type      = "gp2"
 
 // AutoScaling Instance Size
 asg_min_size = "1"
-asg_max_size = "2"
+asg_max_size = "1"
 
 
 # Deploy VPC Flow log

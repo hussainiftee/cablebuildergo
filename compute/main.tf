@@ -11,7 +11,7 @@ resource "aws_launch_configuration" "asg_config" {
   instance_type = var.asg_instance_type
   key_name = "CableBuilderGo1"
   iam_instance_profile = var.iam_instance_profile
-  user_data = templatefile("./compute/template/tomcat_server_build.tmpl", { rds_address = var.rds_address, rds_password = var.rds_password })
+  user_data = templatefile("./compute/template/tomcat_server_build.tmpl", { rds_address = var.rds_address, aws_region = var.aws_region })
   security_groups = [var.app_sg_id]
   
   root_block_device {

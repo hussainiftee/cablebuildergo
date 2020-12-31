@@ -6,7 +6,8 @@ variable "asg_vol_size" {}
 variable "asg_vol_type" {}
 variable "iam_instance_profile" {}
 variable "rds_address" {}
-variable "rds_password" {}
+//variable "rds_password" {}
+variable "aws_region" {}
 
 variable "asg_min_size" {}
 variable "asg_max_size" {}

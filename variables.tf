@@ -3,16 +3,26 @@ variable "aws_region" {
   description = "AWS region"
 }
 
-variable "aws_access_key" {
+/*variable "aws_access_key" {
   description = "AWS Access Key - needed for IAM"
 }
 
 variable "aws_secret_key" {
   description = "AWS Secret Key- needed for IAM"
-}
+} */
 
 variable "account_id" {
   description = "AWS account_id needed for Key Policy"
+}
+
+
+#----Tagging
+variable "tag_proj_name" {
+  default = "cimteq"
+}
+
+variable "tag_env" {
+  default = "Test"
 }
 
 #----networking/variables.tf
@@ -49,8 +59,8 @@ variable "rds_instance_identifier" {}
 //variable "database_name" {}
 variable "db_name_snapshot" {}
 //variable "database_user" {}
-variable "database_password" {}
-variable "db_avail_zone" {}
+//variable "database_password" {}
+//variable "db_avail_zone" {}
 variable "engine_version" {}
 variable "mysql_family" {}
 variable "db_instance_type" {}

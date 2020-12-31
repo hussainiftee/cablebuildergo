@@ -1,13 +1,6 @@
 # Master Module to build 3 Tier Application with High Availaibility 
 # Terraform and Provider Version mentioned in version.tf file
 
-# AWS Provider information
-provider "aws" {
-  region     = var.aws_region
-  access_key = var.aws_access_key
-  secret_key = var.aws_secret_key
-}
-
 # Deploy Networking Resource (VPC & Components)
 module "networking" {
   source            = "./networking"
@@ -48,13 +41,13 @@ module "mysqlrds" {
   source = "./mysqlrds"
   //database_name    = var.database_name  (Not Required as using Snapshot)
   //database_user           = var.database_user (Not Required as using Snapshot)
-  db_name_snapshot                = var.db_name_snapshot
-  database_password               = var.database_password
-  engine                          = var.engine
-  engine_version                  = var.engine_version
-  mysql_family                    = var.mysql_family
-  storage_type                    = var.storage_type
-  db_avail_zone                   = var.db_avail_zone
+  db_name_snapshot = var.db_name_snapshot
+  //database_password               = var.database_password
+  engine         = var.engine
+  engine_version = var.engine_version
+  mysql_family   = var.mysql_family
+  storage_type   = var.storage_type
+  //db_avail_zone                   = var.db_avail_zone
   rds_instance_identifier         = var.rds_instance_identifier
   db_instance_type                = var.db_instance_type
   allocated_storage               = var.allocated_storage
@@ -63,15 +56,17 @@ module "mysqlrds" {
   vpc_id                          = module.networking.vpc_id
   db_subnet_id                    = module.networking.db_private_subnets
   db_sg_id                        = module.security.db_sg_id
+  tag_proj_name                   = var.tag_proj_name
+  tag_env                         = var.tag_env
 }
 
 
 # Deploy IAM role and profile
 module "iam" {
-  source         = "./iam"
-  aws_region     = var.aws_region
-  aws_access_key = var.aws_access_key
-  aws_secret_key = var.aws_secret_key
+  source     = "./iam"
+  aws_region = var.aws_region
+  // aws_access_key = var.aws_access_key
+  //aws_secret_key = var.aws_secret_key
 }
 
 
@@ -84,6 +79,7 @@ module "compute" {
   asg_vol_type         = var.asg_vol_type
   asg_min_size         = var.asg_min_size
   asg_max_size         = var.asg_max_size
+  aws_region           = var.aws_region
   vpc_id               = module.networking.vpc_id
   elb_sg_id            = module.security.elb_sg_id
   app_sg_id            = module.security.app_sg_id
@@ -91,7 +87,7 @@ module "compute" {
   elb_subnet_id        = module.networking.public_subnets
   iam_instance_profile = module.iam.instance_profile_name
   rds_address          = module.mysqlrds.rds-address
-  rds_password         = module.mysqlrds.rds-password
+  //rds_password         = module.mysqlrds.rds-password
 }
 
 

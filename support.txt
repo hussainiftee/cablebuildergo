@@ -1,0 +1,9 @@
+1. If you want to Modify the RDS password then execute the below command.
+
+cd /home/ec2-user/environment/cablebuildergo
+
+terraform taint module.mysqlrds.random_password.password
+terraform apply -var-file="user.tfvars" 
+
+terraform taint module.mysqlrds.aws_ssm_association.password_update
+terraform apply -var-file="user.tfvars" 

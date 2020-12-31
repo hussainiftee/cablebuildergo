@@ -2,7 +2,7 @@
 # Enable Cloud Trail 
 #
 
-resource "aws_kms_key" "logs" {
+/*resource "aws_kms_key" "logs" {
   description = "KMS Key used for log encryption"
   enable_key_rotation = true
    policy = <<POLICY
@@ -108,7 +108,7 @@ POLICY
 resource "aws_kms_alias" "auditlog" {
     name = "alias/auditlog"
     target_key_id = aws_kms_key.logs.key_id
-}
+} */
 
 resource "aws_cloudtrail" "trail" {
   name           = "trail${replace(title(var.project), " ", "")}${title(var.environment)}"
@@ -119,7 +119,7 @@ resource "aws_cloudtrail" "trail" {
   is_multi_region_trail         = "${var.is_multi_region_trail}"
   enable_log_file_validation    = true
   is_organization_trail         = "${var.is_organization_trail}"
-  kms_key_id                    = aws_kms_alias.auditlog.arn
+  //kms_key_id                    = aws_kms_alias.auditlog.arn
 
   event_selector {
     read_write_type           = "All"
@@ -138,9 +138,9 @@ resource "aws_cloudtrail" "trail" {
 
   depends_on = ["aws_s3_bucket.trail"]
   
-   lifecycle {
+   /*lifecycle {
     ignore_changes = ["kms_key_id"]
-  }
+  }*/
   
 }
 

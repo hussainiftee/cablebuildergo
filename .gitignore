@@ -33,5 +33,6 @@ override.tf.json
 terraform.rc
 
 # Exclude secret file
+creds
 user.tfvars
 terraform.tfvars
