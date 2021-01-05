@@ -1,4 +1,6 @@
-# Main module Varriable information
+# -----
+# Main Master module Varriable information
+# -----
 
 #---- AWS Configuration 
 variable "aws_region" {
@@ -11,19 +13,10 @@ variable "account_id" {
 
 
 #----Tagging
-variable "tag_proj_name" {
-  default = "cimteq"
-}
-
-variable "tag_env" {
-  default = "Test"
-}
+variable "tag_proj_name" {}
+variable "tag_env" {}
 
 #----networking/variables.tf
-
-/*variable "project_code" {
-  description = "Track the cost"
-}*/
 
 variable "vpc_cidr" {}
 
@@ -53,8 +46,6 @@ variable "rds_instance_identifier" {}
 //variable "database_name" {}
 variable "db_name_snapshot" {}
 //variable "database_user" {}
-//variable "database_password" {}
-//variable "db_avail_zone" {}
 variable "engine_version" {}
 variable "mysql_family" {}
 variable "db_instance_type" {}
@@ -73,10 +64,20 @@ variable "asg_vol_size" {}
 variable "asg_vol_type" {}
 variable "asg_min_size" {}
 variable "asg_max_size" {}
+variable "asg_desired_size" {}
+variable "ec2_key_name" {
+  default = ""
+}
+variable "ec2_name_tag" {}
+variable "alb_name" {}
 
+#---- FlowLog
+variable "traffic_type" {}
 
 #---- Deploy CloudTrail
 variable "s3_bucket_name" {}
 variable "s3_bucket_days_to_expiration" {}
 variable "s3_bucket_days_to_transition" {}
 variable "multi_region_trail" {}
+
+# ----- End.  

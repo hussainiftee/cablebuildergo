@@ -1,6 +1,8 @@
-# RDS Module - MySQL
+# -----
+# RDS Main Module - MySQL RDS 
+# -----
 
-# As its NOT a MultiAZ RDS hence we need to mention in which AZ we want this RDS to get created
+# As its NOT a MultiAZ RDS hence we need to mention in which AZ we want this RDS to get created.
 data "aws_availability_zones" "availaible" {}
 
 # RDS db private subnet 
@@ -54,8 +56,8 @@ resource "aws_cloudwatch_log_group" "group" {
   name              = "/aws/rds/instance/${var.rds_instance_identifier}/${element(var.enabled_cloudwatch_logs_exports, count.index)}"
   retention_in_days = "30"
    tags = {
-    Project        = "var.tag_proj_name"
-    Environment = "var.tag_env"
+    Project        = var.tag_proj_name
+    Environment = var.tag_env
   } 
 }
 
@@ -70,13 +72,13 @@ data "aws_db_snapshot" "latest_cbg_snapshot" {
   most_recent            = true
 }
 
-# Creating the database from Snapshot, hence few parameter commented.
+# Creating the database from Snapshot, hence few parameters not required.
 resource "aws_db_instance" "cbgrds" {
   identifier                = var.rds_instance_identifier
   snapshot_identifier       = data.aws_db_snapshot.latest_cbg_snapshot.id
   allocated_storage     = var.allocated_storage
   max_allocated_storage = var.max_allocated_storage
-  availability_zone       = data.aws_availability_zones.availaible.names[0]
+  availability_zone       = data.aws_availability_zones.availaible.names[0]  // 0 means az-1, 1 means az-2 and so on.
   storage_type         =  var.storage_type
   engine                    = var.engine
   engine_version            = var.engine_version
@@ -87,7 +89,7 @@ resource "aws_db_instance" "cbgrds" {
   db_subnet_group_name      = aws_db_subnet_group.rdssg.id
   vpc_security_group_ids    = [var.db_sg_id]
   skip_final_snapshot       = true
-  final_snapshot_identifier = "CodeBuilderGo-v1"
+  final_snapshot_identifier = var.rds_instance_identifier
   deletion_protection = false
   publicly_accessible = false
   storage_encrypted = true
@@ -101,8 +103,8 @@ resource "aws_db_instance" "cbgrds" {
   }
   
   tags = {
-    Project        = "var.tag_proj_name"
-    Environment = "var.tag_env"
+    Project        = var.tag_proj_name
+    Environment = var.tag_env
   } 
 }
 
@@ -122,8 +124,8 @@ resource "aws_ssm_parameter" "secret" {
   value       = random_password.password.result
 
  tags = {
-    Project        = "var.tag_proj_name"
-    Environment = "var.tag_env"
+    Project        = var.tag_proj_name
+    Environment = var.tag_env
   } 
 }
 
@@ -154,8 +156,8 @@ resource aws_ssm_document password_update {
 }
 DOC
  tags = {
-    Project        = "var.tag_proj_name"
-    Environment = "var.tag_env"
+    Project        = var.tag_proj_name
+    Environment = var.tag_env
   } 
 }
 
@@ -170,3 +172,6 @@ resource aws_ssm_association password_update {
   depends_on = ["aws_ssm_parameter.secret"]
   
 }
+
+
+# ----- End.  

@@ -1,4 +1,5 @@
 #!/bin/bash -xe
+# This file needs to be on ec2 server and get called by bootstarp script. One of its copy is availaible on S3. 
 exec > >(tee /var/log/user-data1.log|logger -t user-data1 -s 2>/dev/console) 2>&1
 set -x
 /bin/cp -rf /opt/tomcat/conf/Catalina/localhost/context.xml-reuse /opt/tomcat/conf/Catalina/localhost/context.xml

@@ -1,4 +1,8 @@
-# mysqlrds varriables
+
+# -----
+# RDS Variable
+# -----
+
 variable "vpc_id"{}
 
 variable "db_subnet_id" {
@@ -7,11 +11,10 @@ variable "db_subnet_id" {
 
 variable "db_sg_id"{}
 
-//variable "db_avail_zone" {}
 variable "rds_instance_identifier" {}
 //variable "database_name" {}
 //variable "database_user" {}
-//variable "database_password" {}
+
 variable "engine_version" {}
 variable "mysql_family" {}
 variable "db_instance_type" {}
@@ -32,3 +35,5 @@ variable "tag_proj_name" {
 variable "tag_env" {
   default     = "Test"
 }
+
+# ----- End.  

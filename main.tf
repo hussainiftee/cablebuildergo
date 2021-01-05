@@ -17,6 +17,7 @@ module "networking" {
 module "flowlog" {
   source        = "./flowlog"
   vpc_id        = module.networking.vpc_id
+  traffic_type  = var.traffic_type
   tag_proj_name = var.tag_proj_name
   tag_env       = var.tag_env
 }
@@ -84,6 +85,10 @@ module "compute" {
   asg_vol_type         = var.asg_vol_type
   asg_min_size         = var.asg_min_size
   asg_max_size         = var.asg_max_size
+  asg_desired_size     = var.asg_desired_size
+  ec2_key_name         = var.ec2_key_name
+  ec2_name_tag         = var.ec2_name_tag
+  alb_name             = var.alb_name
   aws_region           = var.aws_region
   vpc_id               = module.networking.vpc_id
   elb_sg_id            = module.security.elb_sg_id
@@ -92,6 +97,9 @@ module "compute" {
   elb_subnet_id        = module.networking.public_subnets
   iam_instance_profile = module.iam.instance_profile_name
   rds_address          = module.mysqlrds.rds-address
+  tag_proj_name        = var.tag_proj_name
+  tag_env              = var.tag_env
 }
 
 
+# ----- End.  

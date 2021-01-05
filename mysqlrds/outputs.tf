@@ -1,3 +1,7 @@
+# -----
+# RDS Output - MySQL RDS 
+# -----
+
 output "rds-address" {
   value = aws_db_instance.cbgrds.address
 }
@@ -9,3 +13,5 @@ output "rds-endpoint" {
 output "rds-password" {
   value = aws_db_instance.cbgrds.password
 }
+
+# ----- End.  

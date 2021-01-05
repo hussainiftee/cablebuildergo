@@ -1,3 +1,7 @@
+# -----
+# --- Security Variable Module.
+# -----
+
 variable "vpc_id"{}
 
 variable "vpc_cidr"{}
@@ -19,3 +23,5 @@ variable "ALB_IngCIDRblock" {
   type        = "list"
   default     = ["0.0.0.0/0"]
 }
+
+# ----- End.

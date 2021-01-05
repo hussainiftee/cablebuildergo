@@ -105,8 +105,8 @@ resource "aws_kms_key" "logs" {
 }
 POLICY
 tags = {
-    Project        = "var.tag_proj_name"
-    Environment = "var.tag_env"
+    Project        = var.tag_proj_name
+    Environment = var.tag_env
   } 
 }
 
@@ -140,8 +140,8 @@ resource "aws_cloudtrail" "trail" {
   }
   
   tags = {
-    Project        = "var.tag_proj_name"
-    Environment = "var.tag_env"
+    Project        = var.tag_proj_name
+    Environment = var.tag_env
   } 
 
   depends_on = ["aws_s3_bucket.trail"]
@@ -203,7 +203,7 @@ resource "aws_s3_bucket" "trail" {
 POLICY
 
 tags = {
-    Project        = "var.tag_proj_name"
-    Environment = "var.tag_env"
+    Project        = var.tag_proj_name
+    Environment = var.tag_env
   } 
 }

@@ -1,3 +1,7 @@
+# -----
+# --- Security Main Module.
+# -----
+
 # Default Security Group
 resource "aws_default_security_group" "default" {
   vpc_id      = var.vpc_id
@@ -371,3 +375,4 @@ resource "aws_network_acl" "db_priv_acl" {
   }
 }
 
+# ----- End.

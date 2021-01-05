@@ -1,4 +1,6 @@
-#----networking/variables.tf
+# -----
+# --- Networking Variable Module.
+# ----- 
 
 variable "tag_proj_name" {
   default     = "cimteq"
@@ -21,3 +23,5 @@ variable "app_private_cidrs" {
 variable "db_private_cidrs" {
   type = "list"
 }
+
+# ----- End.  

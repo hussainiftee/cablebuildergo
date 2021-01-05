@@ -1,4 +1,7 @@
-#----networking/outputs.tf
+# -----
+# --- Networking Output Module.
+# -----
+
 #---- Mandate: Use for refernce
 output "vpc_id" {
   value = aws_vpc.cbg_vpc.id
@@ -29,3 +32,4 @@ output "db_private_ips" {
   value = aws_subnet.tf_db_private_subnet.*.cidr_block
 }
 
+# ----- End.  

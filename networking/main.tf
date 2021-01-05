@@ -1,4 +1,7 @@
+# -----
 # Network main module start
+# -----
+
 
 # declare a VPC
 data "aws_availability_zones" "availaible" {}
@@ -10,8 +13,8 @@ resource "aws_vpc" "cbg_vpc" {
 
   tags = {
     Name    = "${var.tag_proj_name}-VPC"
-    Project        = "var.tag_proj_name"
-    Environment = "var.tag_env"
+    Project        = var.tag_proj_name
+    Environment = var.tag_env
   }
 }
 
@@ -21,8 +24,8 @@ resource "aws_internet_gateway" "cbg_vpc_igw" {
 
   tags = {
     Name   = "${var.tag_proj_name}-IGW"
-    Project        = "var.tag_proj_name"
-    Environment = "var.tag_env"
+    Project        = var.tag_proj_name
+    Environment = var.tag_env
   }
 }
 
@@ -78,8 +81,8 @@ resource "aws_subnet" "tf_app_private_subnet" {
 
   tags = {
     Name    = "${var.tag_proj_name}_APP_PRIVATE_${count.index + 1}"
-    Project        = "var.tag_proj_name"
-    Environment = "var.tag_env"
+    Project        = var.tag_proj_name
+    Environment = var.tag_env
   }
 }
 
@@ -98,8 +101,8 @@ resource "aws_subnet" "tf_db_private_subnet" {
 
   tags = {
     Name    = "${var.tag_proj_name}_DB_PRIVATE_${count.index + 1}"
-    Project        = "var.tag_proj_name"
-    Environment = "var.tag_env"
+    Project        = var.tag_proj_name
+    Environment = var.tag_env
   }
 }
 
@@ -115,8 +118,8 @@ resource "aws_eip" "nat_gw_eip" {
 
   tags = {
     Name    = "${var.tag_proj_name}-NGW-EIP"
-    Project        = "var.tag_proj_name"
-    Environment = "var.tag_env"
+    Project        = var.tag_proj_name
+    Environment = var.tag_env
   }
 }
 
@@ -128,8 +131,8 @@ resource "aws_nat_gateway" "ngw" {
 
   tags = {
     Name    = "${var.tag_proj_name}-NGW"
-    Project        = "var.tag_proj_name"
-    Environment = "var.tag_env"
+    Project        = var.tag_proj_name
+    Environment = var.tag_env
   }
 }
 
@@ -138,3 +141,5 @@ resource "aws_route" "nat_gateway-route" {
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = aws_nat_gateway.ngw.id
 }
+
+# ----- End.

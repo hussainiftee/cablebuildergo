@@ -1,5 +1,10 @@
+# -----
+# --- Copmpute Main Module, to build ELB, ASG to manage application ec2 instance
+# ----- 
 
-/*data "aws_kms_key" "alias" {
+
+/* In future we could use to encrypt with KMS CMK.
+data "aws_kms_key" "alias" {
   key_id = "alias/cbg_ebs"
 } */
 
@@ -9,9 +14,9 @@ resource "aws_launch_configuration" "asg_config" {
   name_prefix   = "CBG-App-Config-"
   image_id = var.image_id
   instance_type = var.asg_instance_type
-  key_name = "CableBuilderGo1"
+  key_name = var.ec2_key_name
   iam_instance_profile = var.iam_instance_profile
-  user_data = templatefile("./compute/template/tomcat_server_build.tmpl", { rds_address = var.rds_address, aws_region = var.aws_region })
+  user_data = templatefile("./compute/tomcat_server_build.tmpl", { rds_address = var.rds_address, aws_region = var.aws_region })
   security_groups = [var.app_sg_id]
   
   root_block_device {
@@ -22,14 +27,13 @@ resource "aws_launch_configuration" "asg_config" {
     //kms_key_id            = data.aws_kms_key.alias.id
   }
   
-  // If the launch_configuration is modified:
   // --> Create New resources before destroying the old resources
   lifecycle {
     create_before_destroy = true
   }
 }
 
-// create a target group for your ASG
+# create a Target Group for your ASG
 
 resource "aws_lb_target_group" "asg_tg" {
   name_prefix = "cbgASG"
@@ -53,23 +57,36 @@ resource "aws_lb_target_group" "asg_tg" {
   }
 }
 
-## Creating AutoScaling Group
+# Creating AutoScaling Group
+
 resource "aws_autoscaling_group" "cbg_asg" {
   name = "cablebuildergo-asg"
   launch_configuration = aws_launch_configuration.asg_config.id
   vpc_zone_identifier = var.app_subnet_id[*]
   health_check_grace_period = 300 // Time after instance comes into service before checking health.
   min_size = var.asg_min_size
+  desired_capacity          = var.asg_desired_size
   max_size = var.asg_max_size
   health_check_type = "ELB"
   target_group_arns = [aws_lb_target_group.asg_tg.arn]
  
   tag { 
     key = "Name"
-    value = "CBG-Application-Server"
-    
+    value = var.ec2_name_tag
     propagate_at_launch = true
-  }
+  } 
+  
+  tag { 
+    key = "Project"
+    value = var.tag_proj_name
+    propagate_at_launch = true
+  } 
+  
+  tag { 
+    key = "Environment"
+    value = var.tag_env
+    propagate_at_launch = true
+  } 
  
   lifecycle {
   create_before_destroy = true
@@ -78,8 +95,9 @@ resource "aws_autoscaling_group" "cbg_asg" {
 
 
 ## Creating ELB
+
 resource "aws_lb" "cbg_elb" {
-  name = "cablebuildergo"
+  name = var.alb_name
   internal           = false
   load_balancer_type = "application"
   security_groups = [var.elb_sg_id]
@@ -87,9 +105,13 @@ resource "aws_lb" "cbg_elb" {
    
   //enable_deletion_protection = true
   
- /* access_logs {
-    bucket  = aws_s3_bucket.lb_logs.bucket
-    prefix  = "test-lb"
+  tags = {
+    Project        = var.tag_proj_name
+    Environment = var.tag_env
+  }
+  
+ /* Modify the belwo variables if you want to enable the ELB logging
+ access_logs {
     enabled = true
   } */
  } 
@@ -134,3 +156,4 @@ resource "aws_lb_listener_rule" "asg_rule" {
   }
 }
 
+# ----- End.  

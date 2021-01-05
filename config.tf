@@ -1,3 +1,7 @@
+# -----
+# --- Config Module.
+# -----
+
 # AWS Provider information 
 # default cred location is ~/.aws/credentials. If we are using Cloud9 then we cant use this location.
 provider "aws" {
@@ -21,3 +25,5 @@ terraform {
     // kms_key_id = 
   }
 }
+
+# ----- End.

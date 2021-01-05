@@ -1,0 +1,28 @@
+#!/bin/bash -xe
+exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
+yum update -y
+mkdir /opt/CableBuilderGo/
+aws s3 sync s3://ec2-cimteq/CableBuilderGo/ /opt/CableBuilderGo/
+tar -C /opt -xvzf /opt/CableBuilderGo/apache-tomcat-8.5.60.tar.gz
+mv /opt/apache-tomcat-8.5.60 /opt/tomcat
+yum install -y java-1.8.0-openjdk mariadb glibc.i686
+tar -C /opt/tomcat/ -xvzf /opt/CableBuilderGo/jre-*i586*
+ln -s /opt/tomcat/bin/startup.sh /usr/local/bin/tomcat-start
+ln -s /opt/tomcat/bin/shutdown.sh /usr/local/bin/tomcat-stop
+ln -s /opt/tomcat/bin/version.sh /usr/local/bin/tomcat-version
+/usr/local/bin/tomcat-start
+/usr/bin/sleep 20
+/usr/bin/unzip /opt/CableBuilderGo/cbgo_Trunk.zip -d /opt/CableBuilderGo/ 
+/bin/cp -rf /opt/CableBuilderGo/context.xml /opt/tomcat/conf/Catalina/localhost/context.xml
+/bin/cp -rf /opt/CableBuilderGo/loopback-context.xml /opt/tomcat/webapps/host-manager/META-INF/context.xml
+/bin/cp -rf /opt/CableBuilderGo/loopback-context.xml /opt/tomcat/webapps/manager/META-INF/context.xml
+/bin/cp -rf /opt/CableBuilderGo/server.xml /opt/tomcat/conf/server.xml
+export rds_password=`aws --region=${aws_region} ssm get-parameter --name "/production/cablebuildergo/password/admin" --with-decryption --output text --query Parameter.Value`
+/usr/bin/sed -i 's/cablebuildergodb/'"${rds_address}"'/g' /opt/tomcat/conf/Catalina/localhost/context.xml
+/bin/cp -rf /opt/tomcat/conf/Catalina/localhost/context.xml /opt/tomcat/conf/Catalina/localhost/context.xml-reuse
+/usr/bin/sed -i 's/my_region/'"${aws_region}"'/g' /opt/CableBuilderGo/password_update.sh
+chmod 755 /opt/CableBuilderGo/password_update.sh
+/usr/bin/sed -i 's/DbPassword/'"$rds_password"'/g' /opt/tomcat/conf/Catalina/localhost/context.xml
+/usr/local/bin/tomcat-stop
+/usr/local/bin/tomcat-start
+#end.

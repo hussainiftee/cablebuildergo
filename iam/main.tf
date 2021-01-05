@@ -1,4 +1,7 @@
-# IAM main module: Create Profile/Role/Policy for application ec2 instance.
+# -----
+# --- IAM Main Module.
+# ----- Create Profile/Role/Policy for application ec2 instance to get SSM and S3 access.
+
 
 data "aws_iam_policy" "AmazonEC2RoleforSSM" {
   arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM"
@@ -37,13 +40,11 @@ resource "aws_iam_policy_attachment" "cbg-attach3" {
   name       = "cbg-attachment3"
   roles      = [aws_iam_role.ec2_cbg_role.name]
   policy_arn = data.aws_iam_policy.AmazonEC2RoleforSSM.arn
-  
-  /*lifecycle {
-    ignore_changes = ["roles"]
-  }*/
 } 
 
 resource "aws_iam_instance_profile" "cbg_profile" {
   name  = "cbg_profile"
   role = aws_iam_role.ec2_cbg_role.name
 }
+
+# ----- End.  
