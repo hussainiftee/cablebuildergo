@@ -18,13 +18,13 @@ Terraform IaC Tree:
 		|	|--- variables.tf
 		|	|__ outputs.tf
 		|
-|--- cloudtrail
+        |--- cloudtrail
 		|	|--- main.tf
 		|	|--- variables.tf
 		|	|__ outputs.tf
 		|
 		|
-|--- security
+        |--- security
 		|	|--- main.tf
 		|	|--- variables.tf
 		|	|__ outputs.tf
@@ -34,7 +34,7 @@ Terraform IaC Tree:
 		|	|--- variables.tf
 		|	|__ outputs.tf
 		|
-|--- iam			(Role for ec2 instance)
+        |--- iam			(Role for ec2 instance)
 		|	|--- main.tf
 		|	|--- variables.tf
 		|	|__ outputs.tf
