@@ -1,8 +1,10 @@
+It's our infrastructure module tree.
+
 Terraform IaC Tree:
 
-    	terraform
-    	|--- config.tf     (aws & state file information) 
-    	|--- versions.tf
+    terraform
+    |--- config.tf     (aws & state file information) 
+    |--- versions.tf
 	|--- main.tf
 	|--- variable.tf
 	|--- terraform.tfvars    (Env values for the build)
