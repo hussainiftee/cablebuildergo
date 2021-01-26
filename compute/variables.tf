@@ -1,6 +1,7 @@
 # -----
 # --- Compute Variable.
 # -----
+variable "acm_domain_name" {}
 
 variable "ec2_key_name"{
   default = ""
