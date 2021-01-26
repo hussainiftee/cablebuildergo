@@ -1,3 +1,7 @@
+Provide the AWS credential and export the env
+export AWS_SHARED_CREDENTIALS_FILE=/home/ec2-user/environment/cablebuildergo/creds
+
+
 It's our infrastructure module tree.
 
 Terraform IaC Tree:
@@ -20,13 +24,13 @@ Terraform IaC Tree:
 		|	|--- variables.tf
 		|	|__ outputs.tf
 		|
-        |--- cloudtrail
+                |--- cloudtrail
 		|	|--- main.tf
 		|	|--- variables.tf
 		|	|__ outputs.tf
 		|
 		|
-        |--- security
+                |--- security
 		|	|--- main.tf
 		|	|--- variables.tf
 		|	|__ outputs.tf
@@ -36,7 +40,7 @@ Terraform IaC Tree:
 		|	|--- variables.tf
 		|	|__ outputs.tf
 		|
-        |--- iam			(Role for ec2 instance)
+                |--- iam			(Role for ec2 instance)
 		|	|--- main.tf
 		|	|--- variables.tf
 		|	|__ outputs.tf
