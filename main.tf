@@ -90,6 +90,7 @@ module "compute" {
   ec2_name_tag         = var.ec2_name_tag
   alb_name             = var.alb_name
   aws_region           = var.aws_region
+  acm_domain_name  = var.acm_domain_name
   vpc_id               = module.networking.vpc_id
   elb_sg_id            = module.security.elb_sg_id
   app_sg_id            = module.security.app_sg_id

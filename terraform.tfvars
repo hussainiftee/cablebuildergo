@@ -41,11 +41,12 @@ asg_vol_type      = "gp2"
 ec2_name_tag      = "CBG-Application-Server"
 ec2_key_name      = "CableBuilderGo1"
 alb_name          = "cablebuildergo"
+acm_domain_name   = "gocablebuilder.com"
 
 // AutoScaling Instance Size
 asg_min_size     = "1"
 asg_desired_size = "1"
-asg_max_size     = "1"
+asg_max_size     = "2"
 
 
 # Cloudtrail config 

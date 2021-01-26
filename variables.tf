@@ -70,6 +70,7 @@ variable "ec2_key_name" {
 }
 variable "ec2_name_tag" {}
 variable "alb_name" {}
+variable "acm_domain_name" {}
 
 #---- FlowLog
 variable "traffic_type" {}
